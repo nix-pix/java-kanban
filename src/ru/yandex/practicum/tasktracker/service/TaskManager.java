@@ -8,7 +8,7 @@ import ru.yandex.practicum.tasktracker.model.TaskStatus;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class TaskManager { // Этот класс будет запускаться на старте программы и управлять всеми задачами
+public class TaskManager {
     public HashMap<Integer, Task> tasks = new HashMap<>();
     public HashMap<Integer, Subtask> subtasks = new HashMap<>();
     public HashMap<Integer, Epic> epics = new HashMap<>();
@@ -19,64 +19,134 @@ public class TaskManager { // Этот класс будет запускать�
         return idSequence;
     }
 
-    public HashMap getAllTasks() {
-        return tasks;//, subtasks, epics;
+    public void getAllTasks() {
+        for (int i = 1; i <= idSequence ; i++) {
+            Task task = tasks.get(i);
+            if (task != null) {
+                System.out.println(task);
+            }
+        }
+    }
+
+    public void getAllEpics() {
+        for (int i = 1; i <= idSequence ; i++) {
+            Epic epic = epics.get(i);
+            if (epic != null) {
+                System.out.println(epic);
+            }
+        }
+    }
+
+    public void getAllSubtasks() {
+        for (int i = 1; i <= idSequence ; i++) {
+            Subtask subtask = subtasks.get(i);
+            if (subtask != null) {
+                System.out.println(subtask);
+            }
+        }
     }
 
     public void deleteAllTasks() {
+        tasks.clear();
     }
 
-    public void getTaskById() {
+    public void deleteAllEpics() {
+        epics.clear();
     }
 
-    public void createTask(String name, String description) {
-        idSequence = generateId();
-        tasks.put(idSequence, new Task(idSequence, name, description, TaskStatus.NEW));
+    public void deleteAllSubtasks() {
+        subtasks.clear();
     }
 
-    public void createEpic(String name, String description) {
-        idSequence = generateId();
-        epics.put(idSequence, new Epic(idSequence, name, description, TaskStatus.NEW, new ArrayList<>()));
+    public Task getTaskById(int id) {
+        Task task = tasks.get(id);
+        return task;
     }
 
-    public void createSubtask(String name, String description, int epicId) {
-        idSequence = generateId();
-        subtasks.put(idSequence, new Subtask(idSequence, name, description, TaskStatus.NEW, epicId));
+    public Epic getEpicById(int id) {
+        Epic epic = epics.get(id);
+        return epic;
+    }
+
+    public Subtask getSubtaskById(int id) {
+        Subtask subtask = subtasks.get(id);
+        return subtask;
+    }
+
+    public void createTask(String name, String description, TaskStatus status) {
+        int id = generateId();
+        tasks.put(id, new Task(id, name, description, status));
+    }
+
+    public void createEpic(String name, String description, TaskStatus status) {
+        int id = generateId();
+        epics.put(id, new Epic(id, name, description, status, new ArrayList<>()));
+    }
+
+    public void createSubtask(String name, String description, TaskStatus status, int epicId) {
+        int id = generateId();
+        subtasks.put(id, new Subtask(id, name, description, status, epicId));
         Epic epic = epics.get(epicId);
-        epic.subtaskIds.add(idSequence);
+        epic.subtaskIds.add(id);
     }
 
-    public void updateTask() {
+    public void updateTask(int id, String name, String description, TaskStatus status) {
+        tasks.put(id, new Task(id, name, description, status));
     }
 
-    public void deleteTaskById() {
+    public void updateEpic(int id, String name, String description) {
+        Epic epic = epics.get(id);
+        epic.id = id;
+        epic.name = name;
+        epic.description = description;
+        epics.put(id, epic);
     }
 
-    public void getAllSubtasksInEpic() {
+    public void updateSubtask(int id, String name, String description, TaskStatus status, int epicId) {
+        subtasks.put(id, new Subtask(id, name, description, status, epicId));
+        Epic epic = epics.get(epicId);
+        if (status.equals(TaskStatus.DONE)) {
+            epic.status = TaskStatus.IN_PROGRESS;
+        }
+        ArrayList<Integer> subtaskIds = epic.subtaskIds;
+        boolean epicIsDone = true;
+        for (Integer subtaskId : subtaskIds) {
+            Subtask subtask = subtasks.get(subtaskId);
+            if (!subtask.status.equals(TaskStatus.DONE)) {
+                epicIsDone = false;
+                break;
+            }
+        }
+        if (epicIsDone) {
+            epic.status = TaskStatus.DONE;
+        }
     }
 
-    public void controlStatus() {
+    public void deleteTaskById(int id) {
+        tasks.remove(id);
+    }
+
+    public void deleteEpicById(int id) {
+        Epic epic = epics.get(id);
+        ArrayList<Integer> subtaskIds = epic.subtaskIds;
+        for (Integer subtaskId : subtaskIds) {
+            subtasks.remove(subtaskId);
+        }
+        epics.remove(id);
+    }
+
+    public void deleteSubtaskById(int id, int epicId) {
+        subtasks.remove(id);
+//        Epic epic = epics.get(epicId);
+//        ArrayList<Integer> subtaskIds = epic.subtaskIds;
+//        subtaskIds.remove(id);
+    }
+
+    public void getAllSubtasksInEpic(int id) {
+        Epic epic = epics.get(id);
+        ArrayList<Integer> subtaskIds = epic.subtaskIds;
+        for (Integer subtaskId : subtaskIds) {
+            subtasks.get(subtaskId);
+        }
     }
 }
-
-/* 2.Методы для каждого из типа задач(Задача/Эпик/Подзадача):
-- Получение списка всех задач.
-- Удаление всех задач.
-- Получение по идентификатору.
-- Создание. Сам объект должен передаваться в качестве параметра.
-- Обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
-- Удаление по идентификатору.
-3.Дополнительные методы:
-- Получение списка всех подзадач определённого эпика.
-4.Управление статусами осуществляется по следующему правилу:
-- Менеджер сам не выбирает статус для задачи. Информация о нём приходит менеджеру вместе с информацией о самой задаче.
-  По этим данным в одних случаях он будет сохранять статус, в других будет рассчитывать.
-  (это означает, что не существует отдельного метода, который занимался бы только обновлением статуса задачи.
-  Вместо этого статус задачи обновляется вместе с полным обновлением задачи.)
-- Для эпиков: (Пользователь не должен иметь возможности поменять статус эпика самостоятельно.)
-  если у эпика нет подзадач или все они имеют статус NEW, то статус должен быть NEW.
-  если все подзадачи имеют статус DONE, то и эпик считается завершённым — со статусом DONE.
-  во всех остальных случаях статус должен быть IN_PROGRESS.
-  (Когда меняется статус любой подзадачи в эпике, вам необходимо проверить,
-  что статус эпика изменится соответствующим образом. При этом изменение статуса эпика может и не произойти,
-  если в нём, к примеру, всё ещё есть незакрытые задачи.) */
