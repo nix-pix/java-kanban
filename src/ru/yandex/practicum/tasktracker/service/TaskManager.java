@@ -1,13 +1,65 @@
-package ru.yandex.practicum.tasktracker;
+package ru.yandex.practicum.tasktracker.service;
 
-public class Manager {
-    int id; // уникальный номер задачи
+import ru.yandex.practicum.tasktracker.model.Epic;
+import ru.yandex.practicum.tasktracker.model.Subtask;
+import ru.yandex.practicum.tasktracker.model.Task;
+import ru.yandex.practicum.tasktracker.model.TaskStatus;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class TaskManager { // Этот класс будет запускаться на старте программы и управлять всеми задачами
+    public HashMap<Integer, Task> tasks = new HashMap<>();
+    public HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    public HashMap<Integer, Epic> epics = new HashMap<>();
+    public int idSequence = 0;
+
+    public int generateId() {
+        idSequence = idSequence + 1;
+        return idSequence;
+    }
+
+    public HashMap getAllTasks() {
+        return tasks;//, subtasks, epics;
+    }
+
+    public void deleteAllTasks() {
+    }
+
+    public void getTaskById() {
+    }
+
+    public void createTask(String name, String description) {
+        idSequence = generateId();
+        tasks.put(idSequence, new Task(idSequence, name, description, TaskStatus.NEW));
+    }
+
+    public void createEpic(String name, String description) {
+        idSequence = generateId();
+        epics.put(idSequence, new Epic(idSequence, name, description, TaskStatus.NEW, new ArrayList<>()));
+    }
+
+    public void createSubtask(String name, String description, int epicId) {
+        idSequence = generateId();
+        subtasks.put(idSequence, new Subtask(idSequence, name, description, TaskStatus.NEW, epicId));
+        Epic epic = epics.get(epicId);
+        epic.subtaskIds.add(idSequence);
+    }
+
+    public void updateTask() {
+    }
+
+    public void deleteTaskById() {
+    }
+
+    public void getAllSubtasksInEpic() {
+    }
+
+    public void controlStatus() {
+    }
 }
 
-/* Этот класс будет запускаться на старте программы и управлять всеми задачами.
-В нём должны быть реализованы следующие функции:
-1.Возможность хранить задачи всех типов. Для этого вам нужно выбрать подходящую коллекцию.
-2.Методы для каждого из типа задач(Задача/Эпик/Подзадача):
+/* 2.Методы для каждого из типа задач(Задача/Эпик/Подзадача):
 - Получение списка всех задач.
 - Удаление всех задач.
 - Получение по идентификатору.

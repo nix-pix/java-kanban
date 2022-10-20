@@ -1,9 +1,17 @@
-package ru.yandex.practicum.tasktracker;
+package ru.yandex.practicum.tasktracker.service;
 
-public class Main { // В итоге должна получиться программа, отвечающая за формирование модели данных
+public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Поехали!");
+        TaskManager taskManager = new TaskManager();
+        taskManager.createTask("Первая задача", "Что-то там...1");
+        taskManager.createTask("Вторая задача", "Что-то там...2");
+        taskManager.createEpic("Первый эпик", "Что-то там...3");
+        taskManager.createSubtask("Первая подзадача в первом эпике", "Что-то там...4", 3);
+        taskManager.createSubtask("Втораяая подзадача в первом эпике", "Что-то там...5", 3);
+        taskManager.createEpic("Второй эпик", "Что-то там...6");
+        taskManager.createSubtask("Первая подзадача во втором эпике", "Что-то там...7", 6);
+        taskManager.getAllTasks();
     }
 }
 
