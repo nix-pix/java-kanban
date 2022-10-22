@@ -1,6 +1,7 @@
-package ru.yandex.practicum.tasktracker.service;
+package ru.yandex.practicum.tasktracker;
 
 import ru.yandex.practicum.tasktracker.model.TaskStatus;
+import ru.yandex.practicum.tasktracker.service.TaskManager;
 
 public class Main {
 
@@ -17,20 +18,20 @@ public class Main {
         taskManager.createEpic("Второй эпик", "Что-то там...6", TaskStatus.NEW);
         taskManager.createSubtask("Первая подзадача во втором эпике", "Что-то там...7",
                 TaskStatus.NEW, 6);
-        System.out.println("Создал 2 задачи, один эпик с 2 подзадачами, а другой эпик с 1 подзадачей");
 
-        taskManager.getAllTasks();
-        taskManager.getAllEpics();
-        taskManager.getAllSubtasks();
+        System.out.println("\nСоздал 2 задачи, один эпик с 2 подзадачами, а другой эпик с 1 подзадачей:");
+        System.out.println(taskManager.getAllTasks());
+        System.out.println(taskManager.getAllEpics());
+        System.out.println(taskManager.getAllSubtasks());
 
         taskManager.updateTask(1, "Выполнил первую задачу", "Готово...1", TaskStatus.DONE);
         taskManager.updateSubtask(5, "Выполнил вторую подзадачу в первом эпике", "Готово...5",
                 TaskStatus.DONE, 3);
         taskManager.updateSubtask(7, "Выполнил первую подзадачу во втором эпике", "Готово...7",
                 TaskStatus.DONE, 6);
-        System.out.println("Завершил первую задачу, вторую подзадачу в первом эпике и первую " +
-                "подзадачу во втором эпике");
 
+        System.out.println("\nЗавершил первую задачу, вторую подзадачу в первом эпике и первую " +
+                "подзадачу во втором эпике:");
         System.out.println(taskManager.getTaskById(1));
         System.out.println(taskManager.getSubtaskById(5));
         System.out.println(taskManager.getEpicById(3));
@@ -38,12 +39,12 @@ public class Main {
         System.out.println(taskManager.getEpicById(6));
 
         taskManager.deleteTaskById(1);
-//        taskManager.deleteSubtaskById(5, 3);
+        taskManager.deleteSubtaskById(5, 3);
         taskManager.deleteEpicById(6);
-//        System.out.println("Удалил первую задачу, вторую подзадачу в первом эпике и второй эпик");
-        System.out.println("Удалил первую задачу и второй эпик");
 
-        taskManager.getAllTasks();
-        taskManager.getAllEpics();
+        System.out.println("\nУдалил первую задачу, вторую подзадачу в первом эпике и второй эпик. Остались:");
+        System.out.println(taskManager.getAllTasks());
+        System.out.println(taskManager.getAllEpics());
+        System.out.println(taskManager.getAllSubtasks());
     }
 }

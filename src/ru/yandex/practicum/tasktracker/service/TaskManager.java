@@ -19,31 +19,34 @@ public class TaskManager {
         return idSequence;
     }
 
-    public void getAllTasks() {
-        for (int i = 1; i <= idSequence ; i++) {
-            Task task = tasks.get(i);
-            if (task != null) {
-                System.out.println(task);
+    public ArrayList<Task> getAllTasks() {
+        ArrayList<Task> tasksList = new ArrayList<>();
+        for (Task task : tasks.values()) {
+            if (task.equals(task)) {
+                tasksList.add(task);
             }
         }
+        return tasksList;
     }
 
-    public void getAllEpics() {
-        for (int i = 1; i <= idSequence ; i++) {
-            Epic epic = epics.get(i);
-            if (epic != null) {
-                System.out.println(epic);
+    public ArrayList<Epic> getAllEpics() {
+        ArrayList<Epic> epicsList = new ArrayList<>();
+        for (Epic epic : epics.values()) {
+            if (epic.equals(epic)) {
+                epicsList.add(epic);
             }
         }
+        return epicsList;
     }
 
-    public void getAllSubtasks() {
-        for (int i = 1; i <= idSequence ; i++) {
-            Subtask subtask = subtasks.get(i);
-            if (subtask != null) {
-                System.out.println(subtask);
+    public ArrayList<Subtask> getAllSubtasks() {
+        ArrayList<Subtask> subtasksList = new ArrayList<>();
+        for (Subtask subtask : subtasks.values()) {
+            if (subtask.equals(subtask)) {
+                subtasksList.add(subtask);
             }
         }
+        return subtasksList;
     }
 
     public void deleteAllTasks() {
@@ -135,11 +138,11 @@ public class TaskManager {
         epics.remove(id);
     }
 
-    public void deleteSubtaskById(int id, int epicId) {
+    public void deleteSubtaskById(Integer id, int epicId) {
         subtasks.remove(id);
-//        Epic epic = epics.get(epicId);
-//        ArrayList<Integer> subtaskIds = epic.subtaskIds;
-//        subtaskIds.remove(id);
+        Epic epic = epics.get(epicId);
+        ArrayList<Integer> subtaskIds = epic.subtaskIds;
+        subtaskIds.remove(id);
     }
 
     public void getAllSubtasksInEpic(int id) {
