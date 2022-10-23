@@ -20,32 +20,32 @@ public class TaskManager {
     }
 
     public ArrayList<Task> getAllTasks() {
-        ArrayList<Task> tasksList = new ArrayList<>();
-        for (Task task : tasks.values()) {
-            if (task.equals(task)) {
-                tasksList.add(task);
-            }
-        }
+        ArrayList<Task> tasksList = new ArrayList<>(tasks.values());
+//        for (Task task : tasks.values()) {
+//            if (task.equals(task)) {
+//                tasksList.add(task);
+//            }
+//        }
         return tasksList;
     }
 
     public ArrayList<Epic> getAllEpics() {
-        ArrayList<Epic> epicsList = new ArrayList<>();
-        for (Epic epic : epics.values()) {
-            if (epic.equals(epic)) {
-                epicsList.add(epic);
-            }
-        }
+        ArrayList<Epic> epicsList = new ArrayList<>(epics.values());
+//        for (Epic epic : epics.values()) {
+//            if (epic.equals(epic)) {
+//                epicsList.add(epic);
+//            }
+//        }
         return epicsList;
     }
 
     public ArrayList<Subtask> getAllSubtasks() {
-        ArrayList<Subtask> subtasksList = new ArrayList<>();
-        for (Subtask subtask : subtasks.values()) {
-            if (subtask.equals(subtask)) {
-                subtasksList.add(subtask);
-            }
-        }
+        ArrayList<Subtask> subtasksList = new ArrayList<>(subtasks.values());
+//        for (Subtask subtask : subtasks.values()) {
+//            if (subtask.equals(subtask)) { Не понял зачем subtask.equals(subtask) (и для эпиков и для тасков) - тут же всегда будет true
+//                subtasksList.add(subtask);
+//            }
+//        }
         return subtasksList;
     }
 
