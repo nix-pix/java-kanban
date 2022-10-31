@@ -1,12 +1,12 @@
 package ru.yandex.practicum.tasktracker;
 
 import ru.yandex.practicum.tasktracker.model.TaskStatus;
-import ru.yandex.practicum.tasktracker.service.TaskManager;
+import ru.yandex.practicum.tasktracker.service.InMemoryTaskManager;
 
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
 
         taskManager.createTask("Первая задача", "Что-то там...1", TaskStatus.NEW);
         taskManager.createTask("Вторая задача", "Что-то там...2", TaskStatus.NEW);
