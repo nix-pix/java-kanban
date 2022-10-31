@@ -1,13 +1,25 @@
 package ru.yandex.practicum.tasktracker.service;
 
-public class InMemoryHistoryManager implements HistoryManager {
+import ru.yandex.practicum.tasktracker.model.Task;
 
-//    @Override
-//    public void add(Task task) {
-//
-//    }
+import java.util.ArrayList;
+
+public class InMemoryHistoryManager implements HistoryManager {
+    private static ArrayList<Task> history = new ArrayList<>();
 
     @Override
-    public void getHistory() {
+    public void add(Task task) {
+        int maxHistoryStorage = 10;
+        if (history.size() == maxHistoryStorage) {
+            history.remove(0);
+            history.add(task);
+        } else {
+            history.add(task);
+        }
+    }
+
+    @Override
+    public ArrayList<Task> getHistory() {
+        return history;
     }
 }

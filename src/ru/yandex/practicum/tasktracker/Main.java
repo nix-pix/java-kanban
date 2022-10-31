@@ -39,8 +39,6 @@ public class Main {
         System.out.println(taskManager.getSubtaskById(7));
         System.out.println(taskManager.getEpicById(6));
 
-        System.out.println(taskManager.getTaskById(2));
-
         System.out.println("\nИстория просмотров задач:");
         System.out.println(taskManager.getHistory());
 
