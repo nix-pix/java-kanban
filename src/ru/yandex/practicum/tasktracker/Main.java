@@ -1,12 +1,13 @@
 package ru.yandex.practicum.tasktracker;
 
 import ru.yandex.practicum.tasktracker.model.TaskStatus;
-import ru.yandex.practicum.tasktracker.service.InMemoryTaskManager;
+import ru.yandex.practicum.tasktracker.service.Managers;
+import ru.yandex.practicum.tasktracker.service.TaskManager;
 
 public class Main {
 
     public static void main(String[] args) {
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        TaskManager taskManager = Managers.getDefault();
 
         taskManager.createTask("Первая задача", "Что-то там...1", TaskStatus.NEW);
         taskManager.createTask("Вторая задача", "Что-то там...2", TaskStatus.NEW);
@@ -37,6 +38,11 @@ public class Main {
         System.out.println(taskManager.getEpicById(3));
         System.out.println(taskManager.getSubtaskById(7));
         System.out.println(taskManager.getEpicById(6));
+
+        System.out.println(taskManager.getTaskById(2));
+
+        System.out.println("\nИстория просмотров задач:");
+        System.out.println(taskManager.getHistory());
 
         taskManager.deleteTaskById(1);
         taskManager.deleteSubtaskById(5, 3);

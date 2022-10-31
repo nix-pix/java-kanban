@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManager {
-    public static HashMap<Integer, Task> tasks = new HashMap<>();
-    public static HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    public static HashMap<Integer, Epic> epics = new HashMap<>();
-    public static int idSequence = 0;
+    private static HashMap<Integer, Task> tasks = new HashMap<>();
+    private static HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private static HashMap<Integer, Epic> epics = new HashMap<>();
+    private static ArrayList<Task> history = new ArrayList<>();
+    private static int idSequence = 0;
 
-    @Override
-    public int generateId() {
+    private int generateId() {
         idSequence = idSequence + 1;
         return idSequence;
     }
@@ -56,18 +56,39 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTaskById(int id) {
         Task task = tasks.get(id);
+        int maxHistoryStorage = 10;
+        if (history.size() == maxHistoryStorage) {
+            history.remove(0);
+            history.add(task);
+        } else {
+            history.add(task);
+        }
         return task;
     }
 
     @Override
     public Epic getEpicById(int id) {
         Epic epic = epics.get(id);
+        int maxHistoryStorage = 10;
+        if (history.size() == maxHistoryStorage) {
+            history.remove(0);
+            history.add(epic);
+        } else {
+            history.add(epic);
+        }
         return epic;
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
         Subtask subtask = subtasks.get(id);
+        int maxHistoryStorage = 10;
+        if (history.size() == maxHistoryStorage) {
+            history.remove(0);
+            history.add(subtask);
+        } else {
+            history.add(subtask);
+        }
         return subtask;
     }
 
@@ -159,7 +180,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void getHistory() {
-
+    public ArrayList<Task> getHistory() {
+        return history;
     }
 }
