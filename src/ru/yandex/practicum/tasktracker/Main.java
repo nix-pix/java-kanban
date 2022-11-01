@@ -20,7 +20,7 @@ public class Main {
         taskManager.createSubtask("Первая подзадача во втором эпике", "Что-то там...7",
                 TaskStatus.NEW, 6);
 
-        System.out.println("\nСоздал 2 задачи, один эпик с 2 подзадачами, а другой эпик с 1 подзадачей:");
+        System.out.println("\nСоздал 2 задачи, один эпик с 2 подзадачами, а другой эпик с 1 подзадачей. Итого:");
         System.out.println(taskManager.getAllTasks());
         System.out.println(taskManager.getAllEpics());
         System.out.println(taskManager.getAllSubtasks());
@@ -32,7 +32,7 @@ public class Main {
                 TaskStatus.DONE, 6);
 
         System.out.println("\nЗавершил первую задачу, вторую подзадачу в первом эпике и первую " +
-                "подзадачу во втором эпике:");
+                "подзадачу во втором эпике. Вот что поменялось:");
         System.out.println(taskManager.getTaskById(1));
         System.out.println(taskManager.getSubtaskById(5));
         System.out.println(taskManager.getEpicById(3));

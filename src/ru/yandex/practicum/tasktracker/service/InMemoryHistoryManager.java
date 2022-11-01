@@ -5,7 +5,7 @@ import ru.yandex.practicum.tasktracker.model.Task;
 import java.util.ArrayList;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static ArrayList<Task> history = new ArrayList<>();
+    private final ArrayList<Task> history = new ArrayList<>();
 
     @Override
     public void add(Task task) {
