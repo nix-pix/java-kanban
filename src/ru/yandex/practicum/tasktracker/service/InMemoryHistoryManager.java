@@ -1,25 +1,25 @@
 package ru.yandex.practicum.tasktracker.service;
 
+import ru.yandex.practicum.tasktracker.model.CustomLinkedList;
 import ru.yandex.practicum.tasktracker.model.Task;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final ArrayList<Task> history = new ArrayList<>();
+    CustomLinkedList customLinkedList = new CustomLinkedList();
 
     @Override
     public void add(Task task) {
-        int maxHistoryStorage = 10;
-        if (history.size() == maxHistoryStorage) {
-            history.remove(0);
-            history.add(task);
-        } else {
-            history.add(task);
-        }
+        customLinkedList.linkLast(task);
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
-        return history;
+    public void remove(int id) {
+        customLinkedList.removeNode(id);
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return customLinkedList.getTasks();
     }
 }

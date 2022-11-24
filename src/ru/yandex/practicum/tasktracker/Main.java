@@ -9,46 +9,49 @@ public class Main {
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
 
-        taskManager.createTask("Первая задача", "Что-то там...1", TaskStatus.NEW);
-        taskManager.createTask("Вторая задача", "Что-то там...2", TaskStatus.NEW);
-        taskManager.createEpic("Первый эпик", "Что-то там...3", TaskStatus.NEW);
-        taskManager.createSubtask("Первая подзадача в первом эпике", "Что-то там...4",
+        System.out.println("\nСоздал 2 задачи, 1 эпик с 3 подзадачами и 2 эпик без подзадач");
+        taskManager.createTask("Задача 1", "Задача с id-1", TaskStatus.NEW);
+        taskManager.createTask("Задача 2", "Задача с id-2", TaskStatus.NEW);
+        taskManager.createEpic("Эпик 1", "Эпик с id-3", TaskStatus.NEW);
+        taskManager.createSubtask("Подзадача 1 в эпике 1", "Подзадача с id-4",
                 TaskStatus.NEW, 3);
-        taskManager.createSubtask("Вторая подзадача в первом эпике", "Что-то там...5",
+        taskManager.createSubtask("Подзадача 2 в эпике 1", "Подзадача с id-5",
                 TaskStatus.NEW, 3);
-        taskManager.createEpic("Второй эпик", "Что-то там...6", TaskStatus.NEW);
-        taskManager.createSubtask("Первая подзадача во втором эпике", "Что-то там...7",
-                TaskStatus.NEW, 6);
+        taskManager.createSubtask("Подзадача 3 в эпике 1", "Подзадача с id-6",
+                TaskStatus.NEW, 3);
+        taskManager.createEpic("Эпик 2", "Эпик с id-7", TaskStatus.NEW);
 
-        System.out.println("\nСоздал 2 задачи, один эпик с 2 подзадачами, а другой эпик с 1 подзадачей. Итого:");
-        System.out.println(taskManager.getAllTasks());
-        System.out.println(taskManager.getAllEpics());
-        System.out.println(taskManager.getAllSubtasks());
-
-        taskManager.updateTask(1, "Выполнил первую задачу", "Готово...1", TaskStatus.DONE);
-        taskManager.updateSubtask(5, "Выполнил вторую подзадачу в первом эпике", "Готово...5",
-                TaskStatus.DONE, 3);
-        taskManager.updateSubtask(7, "Выполнил первую подзадачу во втором эпике", "Готово...7",
-                TaskStatus.DONE, 6);
-
-        System.out.println("\nЗавершил первую задачу, вторую подзадачу в первом эпике и первую " +
-                "подзадачу во втором эпике. Вот что поменялось:");
+        System.out.println("\nВызвал задачи с id: 1, 1, 2");
         System.out.println(taskManager.getTaskById(1));
-        System.out.println(taskManager.getSubtaskById(5));
-        System.out.println(taskManager.getEpicById(3));
-        System.out.println(taskManager.getSubtaskById(7));
-        System.out.println(taskManager.getEpicById(6));
-
-        System.out.println("\nИстория просмотров задач:");
+        System.out.println(taskManager.getTaskById(1));
+        System.out.println(taskManager.getTaskById(2));
+        System.out.println("ИСТОРИЯ задач:");
         System.out.println(taskManager.getHistory());
 
-        taskManager.deleteTaskById(1);
-        taskManager.deleteSubtaskById(5, 3);
-        taskManager.deleteEpicById(6);
+        System.out.println("\nВызвал эпики с id: 3, 3, 7");
+        System.out.println(taskManager.getEpicById(3));
+        System.out.println(taskManager.getEpicById(3));
+        System.out.println(taskManager.getEpicById(7));
+        System.out.println("ИСТОРИЯ задач и эпиков:");
+        System.out.println(taskManager.getHistory());
 
-        System.out.println("\nУдалил первую задачу, вторую подзадачу в первом эпике и второй эпик. Остались:");
-        System.out.println(taskManager.getAllTasks());
-        System.out.println(taskManager.getAllEpics());
-        System.out.println(taskManager.getAllSubtasks());
+        System.out.println("\nВызвал подзадачи с id: 6, 4, 5, 6");
+        System.out.println(taskManager.getSubtaskById(6));
+        System.out.println(taskManager.getSubtaskById(4));
+        System.out.println(taskManager.getSubtaskById(5));
+        System.out.println(taskManager.getSubtaskById(6));
+        String historyText = "ИСТОРИЯ задач, эпиков и подзадач:";
+        System.out.println(historyText);
+        System.out.println(taskManager.getHistory());
+
+        System.out.println("\nУдалил задачу с id: 1, в том числе из истории");
+        taskManager.deleteTaskById(1);
+        System.out.println(historyText);
+        System.out.println(taskManager.getHistory());
+
+        System.out.println("\nУдалил эпик с id: 3 и должны удалиться подзадачи с id: 4, 5, 6, в том числе из истории");
+        taskManager.deleteEpicById(3);
+        System.out.println(historyText);
+        System.out.println(taskManager.getHistory());
     }
 }
