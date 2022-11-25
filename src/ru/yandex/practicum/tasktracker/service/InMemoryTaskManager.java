@@ -123,6 +123,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(epicId);
         List<Integer> subtaskIds = epic.getSubtaskIds();
         subtaskIds.remove(id);
+        epic.setStatus(TaskStatus.IN_PROGRESS);
     }
 
     @Override

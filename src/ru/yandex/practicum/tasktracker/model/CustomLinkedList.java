@@ -21,14 +21,14 @@ public class CustomLinkedList {
             removeNode(id);
         }
 
-        final Node t = tail;
-        final Node newNode = new Node(t, task, null);
+        final Node oldTail = tail;
+        final Node newNode = new Node(oldTail, task, null);
         tail = newNode;
 
-        if (t == null) {
+        if (oldTail == null) {
             head = newNode;
         } else {
-            t.next = newNode;
+            oldTail.next = newNode;
         }
         size++;
         history.put(id, newNode);
@@ -36,32 +36,32 @@ public class CustomLinkedList {
 
     public List<Task> getTasks() {
         List<Task> tasks = new ArrayList<>();
-        for (Node x = head; x != null; x = x.next) {
-            tasks.add(x.task);
+        for (Node i = head; i != null; i = i.next) {
+            tasks.add(i.task);
         }
         return tasks;
     }
 
     public void removeNode(int id) {
-        Node x = history.get(id);
-        Node prev = x.prev;
-        Node next = x.next;
+        Node toRemove = history.get(id);
+        Node prev = toRemove.prev;
+        Node next = toRemove.next;
 
         if (prev == null) {
             head = next;
         } else {
             prev.next = next;
-            x.prev = null;
+            toRemove.prev = null;
         }
 
         if (next == null) {
             tail = prev;
         } else {
             next.prev = prev;
-            x.next = null;
+            toRemove.next = null;
         }
 
-        x.task = null;
+        toRemove.task = null;
         size--;
         history.remove(id);
     }
