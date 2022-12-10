@@ -51,6 +51,7 @@ public class Main {
 
         System.out.println("\nУдалил эпик с id: 3 и должны удалиться подзадачи с id: 4, 5, 6, в том числе из истории");
         taskManager.deleteEpicById(3);
+        //taskManager.deleteSubtaskById(4, 3); проверка на удаление подзадачи
         System.out.println(historyText);
         System.out.println(taskManager.getHistory());
     }
