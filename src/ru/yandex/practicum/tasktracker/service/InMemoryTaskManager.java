@@ -1,9 +1,6 @@
 package ru.yandex.practicum.tasktracker.service;
 
-import ru.yandex.practicum.tasktracker.model.Epic;
-import ru.yandex.practicum.tasktracker.model.Subtask;
-import ru.yandex.practicum.tasktracker.model.Task;
-import ru.yandex.practicum.tasktracker.model.TaskStatus;
+import ru.yandex.practicum.tasktracker.model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,40 +14,43 @@ public class InMemoryTaskManager implements TaskManager {
 
     HistoryManager historyManager = Managers.getDefaultHistory();
 
+    public void setIdSequence(int idSequence) {
+        this.idSequence = idSequence;
+    }
+
     private int generateId() {
         idSequence++;
         return idSequence;
     }
 
     @Override
-    public void createTask(String name, String description, TaskStatus status) {
+    public void createTask(String name, String description) {
         int id = generateId();
-        tasks.put(id, new Task(id, name, description, status));
+        tasks.put(id, new Task(id, TaskType.TASK, name, description, TaskStatus.NEW));
     }
 
     @Override
-    public void createEpic(String name, String description, TaskStatus status) {
+    public void createEpic(String name, String description) {
         int id = generateId();
-        epics.put(id, new Epic(id, name, description, status, new ArrayList<>()));
+        epics.put(id, new Epic(id, TaskType.EPIC, name, description, TaskStatus.NEW, new ArrayList<>()));
     }
 
     @Override
-    public void createSubtask(String name, String description, TaskStatus status, int epicId) {
+    public void createSubtask(String name, String description, int epicId) {
         int id = generateId();
-        subtasks.put(id, new Subtask(id, name, description, status, epicId));
+        subtasks.put(id, new Subtask(id, TaskType.SUBTASK, name, description, TaskStatus.NEW, epicId));
         Epic epic = epics.get(epicId);
         epic.getSubtaskIds().add(id);
     }
 
     @Override
     public void updateTask(int id, String name, String description, TaskStatus status) {
-        tasks.put(id, new Task(id, name, description, status));
+        tasks.put(id, new Task(id, TaskType.TASK, name, description, status));
     }
 
     @Override
     public void updateEpic(int id, String name, String description) {
         Epic epic = epics.get(id);
-        epic.setId(id);
         epic.setName(name);
         epic.setDescription(description);
         epics.put(id, epic);
@@ -58,7 +58,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateSubtask(int id, String name, String description, TaskStatus status, int epicId) {
-        subtasks.put(id, new Subtask(id, name, description, status, epicId));
+        subtasks.put(id, new Subtask(id, TaskType.SUBTASK, name, description, status, epicId));
         Epic epic = epics.get(epicId);
         if (status.equals(TaskStatus.DONE)) {
             epic.setStatus(TaskStatus.IN_PROGRESS);

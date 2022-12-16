@@ -5,8 +5,8 @@ import java.util.List;
 public class Epic extends Task {
     private final List<Integer> subtaskIds; // номера подзадач в этом эпике
 
-    public Epic(int id, String name, String description, TaskStatus status, List<Integer> subtaskIds) {
-        super(id, name, description, status);
+    public Epic(int id, TaskType type, String name, String description, TaskStatus status, List<Integer> subtaskIds) {
+        super(id, type, name, description, status);
         this.subtaskIds = subtaskIds;
     }
 
@@ -16,7 +16,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{" +
+        return "EPIC{" +
                 "id=" + super.getId() +
                 ", subtaskIds=" + subtaskIds +
                 ", name='" + super.getName() + '\'' +

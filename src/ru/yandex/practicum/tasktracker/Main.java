@@ -1,6 +1,5 @@
 package ru.yandex.practicum.tasktracker;
 
-import ru.yandex.practicum.tasktracker.model.TaskStatus;
 import ru.yandex.practicum.tasktracker.service.Managers;
 import ru.yandex.practicum.tasktracker.service.TaskManager;
 
@@ -10,16 +9,13 @@ public class Main {
         TaskManager taskManager = Managers.getDefault();
 
         System.out.println("\nСоздал 2 задачи, 1 эпик с 3 подзадачами и 2 эпик без подзадач");
-        taskManager.createTask("Задача 1", "Задача с id-1", TaskStatus.NEW);
-        taskManager.createTask("Задача 2", "Задача с id-2", TaskStatus.NEW);
-        taskManager.createEpic("Эпик 1", "Эпик с id-3", TaskStatus.NEW);
-        taskManager.createSubtask("Подзадача 1 в эпике 1", "Подзадача с id-4",
-                TaskStatus.NEW, 3);
-        taskManager.createSubtask("Подзадача 2 в эпике 1", "Подзадача с id-5",
-                TaskStatus.NEW, 3);
-        taskManager.createSubtask("Подзадача 3 в эпике 1", "Подзадача с id-6",
-                TaskStatus.NEW, 3);
-        taskManager.createEpic("Эпик 2", "Эпик с id-7", TaskStatus.NEW);
+        taskManager.createTask("Задача 1", "Задача с id-1");
+        taskManager.createTask("Задача 2", "Задача с id-2");
+        taskManager.createEpic("Эпик 1", "Эпик с id-3");
+        taskManager.createSubtask("Подзадача 1 в эпике 1", "Подзадача с id-4", 3);
+        taskManager.createSubtask("Подзадача 2 в эпике 1", "Подзадача с id-5", 3);
+        taskManager.createSubtask("Подзадача 3 в эпике 1", "Подзадача с id-6", 3);
+        taskManager.createEpic("Эпик 2", "Эпик с id-7");
 
         System.out.println("\nВызвал задачи с id: 1, 1, 2");
         System.out.println(taskManager.getTaskById(1));
@@ -51,7 +47,7 @@ public class Main {
 
         System.out.println("\nУдалил эпик с id: 3 и должны удалиться подзадачи с id: 4, 5, 6, в том числе из истории");
         taskManager.deleteEpicById(3);
-        //taskManager.deleteSubtaskById(4, 3); проверка на удаление подзадачи
+//        taskManager.deleteSubtaskById(4, 3); //проверка на удаление подзадачи
         System.out.println(historyText);
         System.out.println(taskManager.getHistory());
     }

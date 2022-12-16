@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
-    void createTask(String name, String description, TaskStatus status);
-    void createEpic(String name, String description, TaskStatus status);
-    void createSubtask(String name, String description, TaskStatus status, int epicId);
+    void createTask(String name, String description);
+    void createEpic(String name, String description);
+    void createSubtask(String name, String description, int epicId);
     void updateTask(int id, String name, String description, TaskStatus status);
     void updateEpic(int id, String name, String description);
     void updateSubtask(int id, String name, String description, TaskStatus status, int epicId);
