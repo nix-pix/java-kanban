@@ -3,7 +3,7 @@ package ru.yandex.practicum.tasktracker;
 import ru.yandex.practicum.tasktracker.service.Managers;
 import ru.yandex.practicum.tasktracker.service.TaskManager;
 
-public class Main {
+public class MainForTZ5 {
 
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();

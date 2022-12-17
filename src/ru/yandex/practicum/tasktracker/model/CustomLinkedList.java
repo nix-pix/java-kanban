@@ -11,10 +11,6 @@ public class CustomLinkedList {
     public Node tail;
     private int size = 0;
 
-    public int getSize() {
-        return size;
-    }
-
     public void linkLast(Task task) {
         int id = task.getId();
         if (history.containsKey(id)) {

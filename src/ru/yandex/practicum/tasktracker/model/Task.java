@@ -2,7 +2,7 @@ package ru.yandex.practicum.tasktracker.model;
 
 public class Task {
     private int id;
-    private TaskType type;
+    private final TaskType type;
     private String name;
     private String description;
     private TaskStatus status;
@@ -21,6 +21,10 @@ public class Task {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public TaskType getType() {
+        return type;
     }
 
     public String getName() {
