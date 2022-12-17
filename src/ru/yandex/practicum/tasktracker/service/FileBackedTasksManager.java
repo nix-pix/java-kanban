@@ -7,10 +7,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private final Path path;
+    protected final HashMap<Integer, Task> allTasks = new HashMap<>();
 
     public FileBackedTasksManager(Path path) {
         this.path = path;
@@ -102,6 +104,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             throw new RuntimeException(e);
         }
 
+        if (fileData.isBlank()) {
+            System.out.println("Файл пустой.");
+            return fileBackedTasksManager;
+        }
+
         String[] lines = fileData.split("\r?\n");
         int i = 1;
         for (; !lines[i].isBlank() && i < lines.length; i++) {
@@ -118,10 +125,23 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 fileBackedTasksManager.subtasks.put(taskId, (Subtask) task);
             }
         }
-        List<Integer> historyIds = historyFromString(lines[i]);
-        for (Integer id : historyIds) {
+        fileBackedTasksManager.allTasks.putAll(fileBackedTasksManager.tasks);
+        fileBackedTasksManager.allTasks.putAll(fileBackedTasksManager.epics);
+        fileBackedTasksManager.allTasks.putAll(fileBackedTasksManager.subtasks);
 
+        List<Integer> historyIds = historyFromString(lines[i + 1]);
+        for (Integer id : historyIds) {
+            Task task = fileBackedTasksManager.allTasks.get(id);
+            fileBackedTasksManager.historyManager.add(task);
         }
+
+        int maxId = 0;
+        for (Integer id : fileBackedTasksManager.allTasks.keySet()) {
+            if (id > maxId) {
+                maxId = id;
+            }
+        }
+        fileBackedTasksManager.setIdSequence(maxId);
         return fileBackedTasksManager;
     }
 

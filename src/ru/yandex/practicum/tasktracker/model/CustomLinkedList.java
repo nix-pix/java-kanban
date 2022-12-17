@@ -6,10 +6,9 @@ import java.util.List;
 
 public class CustomLinkedList {
     private final HashMap<Integer, Node> history = new HashMap<>();
-
-    public Node head;
-    public Node tail;
-    private int size = 0;
+    private Node head;
+    private Node tail;
+    int size = 0;
 
     public void linkLast(Task task) {
         int id = task.getId();

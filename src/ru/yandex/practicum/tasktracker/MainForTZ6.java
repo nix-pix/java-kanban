@@ -10,7 +10,6 @@ public class MainForTZ6 {
     public static void main(String[] args) {
         Path path = Paths.get("." + File.separator + "resources" + File.separator + "memoryFile.csv");
 
-        //FileBackedTasksManager firstFileBackedTasksManager = FileBackedTasksManager.loadFromFile(path);
         FileBackedTasksManager firstFileBackedTasksManager = new FileBackedTasksManager(path);
 
         System.out.println("\nПервый вызов менеджера задач (файл должен быть пустым):");
@@ -32,8 +31,7 @@ public class MainForTZ6 {
         System.out.println(firstFileBackedTasksManager.getEpicById(3));
         System.out.println(firstFileBackedTasksManager.getSubtaskById(5));
 
-        //FileBackedTasksManager secondFileBackedTasksManager = FileBackedTasksManager.loadFromFile(path);
-        FileBackedTasksManager secondFileBackedTasksManager = new FileBackedTasksManager(path);
+        FileBackedTasksManager secondFileBackedTasksManager = FileBackedTasksManager.loadFromFile(path);
 
         System.out.println("\nВторой вызов менеджера задач (файл должен быть заполнен):");
         System.out.println("ИСТОРИЯ ПРОСМОТРА задач, эпиков и подзадач из файла:");
