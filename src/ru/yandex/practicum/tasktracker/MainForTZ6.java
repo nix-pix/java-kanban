@@ -1,6 +1,7 @@
 package ru.yandex.practicum.tasktracker;
 
 import ru.yandex.practicum.tasktracker.service.FileBackedTasksManager;
+import ru.yandex.practicum.tasktracker.service.TaskManager;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -10,7 +11,7 @@ public class MainForTZ6 {
     public static void main(String[] args) {
         Path path = Paths.get("." + File.separator + "resources" + File.separator + "memoryFile.csv");
 
-        FileBackedTasksManager firstFileBackedTasksManager = new FileBackedTasksManager(path);
+        TaskManager firstFileBackedTasksManager = new FileBackedTasksManager(path);
 
         System.out.println("\nПервый вызов менеджера задач (файл должен быть пустым):");
         System.out.println("ИСТОРИЯ ПРОСМОТРА задач, эпиков и подзадач из файла в начале программы:");
@@ -31,7 +32,7 @@ public class MainForTZ6 {
         System.out.println(firstFileBackedTasksManager.getEpicById(3));
         System.out.println(firstFileBackedTasksManager.getSubtaskById(5));
 
-        FileBackedTasksManager secondFileBackedTasksManager = FileBackedTasksManager.loadFromFile(path);
+        TaskManager secondFileBackedTasksManager = FileBackedTasksManager.loadFromFile(path);
 
         System.out.println("\nВторой вызов менеджера задач (файл должен быть заполнен):");
         System.out.println("ИСТОРИЯ ПРОСМОТРА задач, эпиков и подзадач из файла:");
