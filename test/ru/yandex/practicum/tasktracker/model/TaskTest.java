@@ -7,4 +7,10 @@ public class TaskTest {
 //        int sum = calculator.calculatePolishNotation("1 1 +");
 //        Assertions.assertEquals(2, sum);
 //    }
+
+//    @Test
+//    public void shouldReturn2ForCalculateOneOnePlus() {
+//        int sum = calculator.calculatePolishNotation("1 1 +");
+//        Assertions.assertEquals(2, sum);
+//    }
 }
