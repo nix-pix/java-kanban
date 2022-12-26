@@ -9,8 +9,9 @@ public class Task {
     private String name;
     private String description;
     private TaskStatus status;
-    private long duration;
     private LocalDateTime startTime;
+    private long duration;
+
 
     public Task(int id, TaskType type, String name, String description, TaskStatus status) {
         this.id = id;
@@ -18,6 +19,16 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public Task(int id, TaskType type, String name, String description, TaskStatus status, LocalDateTime startTime, long duration) {
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public int getId() {

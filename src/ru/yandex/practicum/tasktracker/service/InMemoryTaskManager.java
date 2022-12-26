@@ -2,25 +2,41 @@ package ru.yandex.practicum.tasktracker.service;
 
 import ru.yandex.practicum.tasktracker.model.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Task> tasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
     protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
+//    protected final HashMap<Integer, Task> tasksAndSubtasks = new HashMap<>();
+    public Set<Task> prioritizedTasks = new TreeSet<>(Comparator);
     private int idSequence = 0;
 
     HistoryManager historyManager = Managers.getDefaultHistory();
+
+    private int generateId() {
+        idSequence++;
+        return idSequence;
+    }
 
     public void setIdSequence(int idSequence) {
         this.idSequence = idSequence;
     }
 
-    private int generateId() {
-        idSequence++;
-        return idSequence;
+//    public HashMap<Integer, Task> getPrioritizedTasks() {
+//        return tasksAndSubtasks;
+//    }
+
+    public void saveToPrioritizedTasks(Task task) {
+        if (task.getStartTime() == null) {
+            prioritizedTasks.add(task);
+        } else {
+            prioritizedTasks.a
+        }
+    }
+
+    public Set<Task> getPrioritizedTasks() {
+        return prioritizedTasks;
     }
 
     @Override

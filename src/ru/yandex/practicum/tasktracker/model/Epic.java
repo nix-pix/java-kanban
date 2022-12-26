@@ -1,9 +1,11 @@
 package ru.yandex.practicum.tasktracker.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Epic extends Task {
     private final List<Integer> subtaskIds; // номера подзадач в этом эпике
+    private LocalDateTime endTime;
 
     public Epic(int id, TaskType type, String name, String description, TaskStatus status, List<Integer> subtaskIds) {
         super(id, type, name, description, status);
