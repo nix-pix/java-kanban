@@ -51,14 +51,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         if (task.getType().equals(TaskType.SUBTASK)) {
             Subtask subtask = (Subtask) task;
             return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getDescription() + ","
-                    + task.getStatus() + "," + task.getStartTime() + "," + task.getDuration() + "," + task.getEndTime() + "," + subtask.getEpicId();
+                    + task.getStatus() + "," + task.getStartTime() + "," + task.getDuration() + ","
+                    + task.getEndTime() + "," + subtask.getEpicId();
         } else if (task.getType().equals(TaskType.EPIC)) {
             Epic epic = (Epic) task;
             return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getDescription() + ","
-                    + task.getStatus() + "," + epic.getEpicStartTime() + "," + epic.getEpicDuration() + "," + epic.getEpicEndTime() + ",";
+                    + task.getStatus() + "," + epic.getEpicStartTime() + "," + epic.getEpicDuration() + ","
+                    + epic.getEpicEndTime() + ",";
         } else {
             return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getDescription() + ","
-                    + task.getStatus() + "," + task.getStartTime() + "," + task.getDuration() + "," + task.getEndTime() + ",";
+                    + task.getStatus() + "," + task.getStartTime() + "," + task.getDuration() + ","
+                    + task.getEndTime() + ",";
         }
     }
 

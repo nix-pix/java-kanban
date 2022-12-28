@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Task {
-    private int id;
+    private final int id;
     private final TaskType type;
     private String name;
     private String description;
@@ -85,6 +85,7 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", startTime=" + startTime +
+                ", duration(min)=" + duration +
                 ", endTime=" + getEndTime() +
                 '}';
     }

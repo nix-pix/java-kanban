@@ -21,6 +21,7 @@ public class Subtask extends Task {
                 ", description='" + super.getDescription() + '\'' +
                 ", status=" + super.getStatus() +
                 ", startTime=" + super.getStartTime() +
+                ", duration(min)=" + super.getDuration() +
                 ", endTime=" + super.getEndTime() +
                 '}';
     }

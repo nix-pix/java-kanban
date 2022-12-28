@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface TaskManager {
 
+    List<Task> getPrioritizedTasks();
+
     void createTask(String name, String description);
 
     void createEpic(String name, String description);

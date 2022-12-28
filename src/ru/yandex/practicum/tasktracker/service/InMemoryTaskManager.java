@@ -3,16 +3,25 @@ package ru.yandex.practicum.tasktracker.service;
 import ru.yandex.practicum.tasktracker.model.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Task> tasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
     protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-//    protected final HashMap<Integer, Task> tasksAndSubtasks = new HashMap<>();
-//    public Set<Task> prioritizedTasks = new TreeSet<>(Comparator);
+    protected final ArrayList<Task> tasksAndSubtasks = new ArrayList<>();
+    protected final Set<Task> prioritizedTasks = new TreeSet<>(new Comparator<Task>() {
+        @Override
+        public int compare(Task o1, Task o2) {
+            if (o1.getStartTime().isBefore(o2.getStartTime())) {
+                return -1;
+            } else if (o1.getStartTime().isAfter(o2.getStartTime())) {
+                return 1;
+            } else {
+                return o1.getId() - o2.getId();
+            }
+        }
+    });
     private int idSequence = 0;
 
     HistoryManager historyManager = Managers.getDefaultHistory();
@@ -26,9 +35,11 @@ public class InMemoryTaskManager implements TaskManager {
         this.idSequence = idSequence;
     }
 
-//    public HashMap<Integer, Task> getPrioritizedTasks() {
-//        return tasksAndSubtasks;
-//    }
+    @Override
+    public List<Task> getPrioritizedTasks() {
+        tasksAndSubtasks.addAll(prioritizedTasks);
+        return tasksAndSubtasks;
+    }
 
 //    public void saveToPrioritizedTasks(Task task) {
 //        if (task.getStartTime() == null) {
@@ -36,11 +47,6 @@ public class InMemoryTaskManager implements TaskManager {
 //        } else {
 //            prioritizedTasks.a
 //        }
-//    }
-
-//    public Set<Task> getPrioritizedTasks() {
-//        return prioritizedTasks;
-//        return null;
 //    }
 
     @Override
@@ -196,6 +202,7 @@ public class InMemoryTaskManager implements TaskManager {
         Task task = tasks.get(id);
         task.setStartTime(startTime);
         task.setDuration(duration);
+        prioritizedTasks.add(task);
     }
 
     @Override
