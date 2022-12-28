@@ -6,6 +6,7 @@ import ru.yandex.practicum.tasktracker.model.Task;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
+
     CustomLinkedList customLinkedList = new CustomLinkedList();
 
     @Override

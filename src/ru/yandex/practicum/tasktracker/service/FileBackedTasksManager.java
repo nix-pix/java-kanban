@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +26,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         ArrayList<Subtask> subtasks = getAllSubtasks();
 
         try (FileWriter writer = new FileWriter(path.toFile())) {
-            writer.write("id,type,name,description,status,epicId\n");
+            writer.write("id,type,name,description,status,start,duration,end,epicId\n");
             for (Task task : tasks) {
                 writer.write(toString(task) + "\n");
             }
@@ -49,10 +51,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         if (task.getType().equals(TaskType.SUBTASK)) {
             Subtask subtask = (Subtask) task;
             return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getDescription() + ","
-                    + task.getStatus() + "," + subtask.getEpicId();
+                    + task.getStatus() + "," + task.getStartTime() + "," + task.getDuration() + "," + task.getEndTime() + "," + subtask.getEpicId();
+        } else if (task.getType().equals(TaskType.EPIC)) {
+            Epic epic = (Epic) task;
+            return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getDescription() + ","
+                    + task.getStatus() + "," + epic.getEpicStartTime() + "," + epic.getEpicDuration() + "," + epic.getEpicEndTime() + ",";
         } else {
             return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getDescription() + ","
-                    + task.getStatus() + ",";
+                    + task.getStatus() + "," + task.getStartTime() + "," + task.getDuration() + "," + task.getEndTime() + ",";
         }
     }
 
@@ -66,12 +72,30 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         switch (type) {
             case TASK:
-                return new Task(id, type, name, description, status);
+                Task task = new Task(id, type, name, description, status);
+                if (!taskData[5].equals("null")) {
+                    task.setStartTime(LocalDateTime.parse(taskData[5]));
+                    Duration duration = Duration.between(LocalDateTime.parse(taskData[5]), LocalDateTime.parse(taskData[7]));
+                    task.setDuration(duration.toMinutes());
+                }
+                return task;
             case EPIC:
-                return new Epic(id, type, name, description, status, new ArrayList<>());
+                Epic epic = new Epic(id, type, name, description, status, new ArrayList<>());
+                if (!taskData[5].equals("null")) {
+                    epic.setEpicStartTime(LocalDateTime.parse(taskData[5]));
+                    epic.setEpicDuration(Long.parseLong(taskData[6]));
+                    epic.setEpicEndTime(LocalDateTime.parse(taskData[7]));
+                }
+                return epic;
             case SUBTASK:
-                int epicId = Integer.parseInt(taskData[5]);
-                return new Subtask(id, type, name, description, status, epicId);
+                int epicId = Integer.parseInt(taskData[8]);
+                Subtask subtask = new Subtask(id, type, name, description, status, epicId);
+                if (!taskData[5].equals("null")) {
+                    subtask.setStartTime(LocalDateTime.parse(taskData[5]));
+                    Duration duration = Duration.between(LocalDateTime.parse(taskData[5]), LocalDateTime.parse(taskData[7]));
+                    subtask.setDuration(duration.toMinutes());
+                }
+                return subtask;
         }
         return null;
     }
@@ -182,5 +206,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         Subtask subtask = super.getSubtaskById(id);
         save();
         return subtask;
+    }
+
+    @Override
+    public void setTaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration) {
+        super.setTaskStartTimeAndDuration(id, startTime, duration);
+        save();
+    }
+
+    @Override
+    public void setSubtaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration) {
+        super.setSubtaskStartTimeAndDuration(id, startTime, duration);
+        save();
     }
 }

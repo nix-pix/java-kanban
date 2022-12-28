@@ -29,14 +29,6 @@ public class CustomLinkedList {
         history.put(id, newNode);
     }
 
-    public List<Task> getTasks() {
-        List<Task> tasks = new ArrayList<>();
-        for (Node i = head; i != null; i = i.next) {
-            tasks.add(i.task);
-        }
-        return tasks;
-    }
-
     public void removeNode(int id) {
         Node toRemove = history.get(id);
         Node prev = toRemove.prev;
@@ -59,6 +51,14 @@ public class CustomLinkedList {
         toRemove.task = null;
         size--;
         history.remove(id);
+    }
+
+    public List<Task> getTasks() {
+        List<Task> tasks = new ArrayList<>();
+        for (Node i = head; i != null; i = i.next) {
+            tasks.add(i.task);
+        }
+        return tasks;
     }
 
     static class Node {

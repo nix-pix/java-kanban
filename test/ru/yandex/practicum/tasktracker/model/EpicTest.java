@@ -1,6 +1,6 @@
 package ru.yandex.practicum.tasktracker.model;
 
-public class EpicTest {
+class EpicTest {
 
 //    @Test
 //    public void shouldReturn2ForCalculateOneOnePlus() {

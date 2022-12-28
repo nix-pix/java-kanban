@@ -1,6 +1,7 @@
 package ru.yandex.practicum.tasktracker.service;
 
 public final class Managers {
+
     private Managers() {
     }
 

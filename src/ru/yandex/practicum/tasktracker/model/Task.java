@@ -12,7 +12,6 @@ public class Task {
     private LocalDateTime startTime;
     private long duration;
 
-
     public Task(int id, TaskType type, String name, String description, TaskStatus status) {
         this.id = id;
         this.type = type;
@@ -21,22 +20,8 @@ public class Task {
         this.status = status;
     }
 
-    public Task(int id, TaskType type, String name, String description, TaskStatus status, LocalDateTime startTime, long duration) {
-        this.id = id;
-        this.type = type;
-        this.name = name;
-        this.description = description;
-        this.status = status;
-        this.startTime = startTime;
-        this.duration = duration;
-    }
-
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public TaskType getType() {
@@ -67,14 +52,6 @@ public class Task {
         this.status = status;
     }
 
-    public long getDuration() {
-        return duration;
-    }
-
-    public void setDuration(long duration) {
-        this.duration = duration;
-    }
-
     public LocalDateTime getStartTime() {
         return startTime;
     }
@@ -83,8 +60,21 @@ public class Task {
         this.startTime = startTime;
     }
 
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
     public LocalDateTime getEndTime() {
-        return startTime.plus(Duration.ofMinutes(duration));
+        LocalDateTime endTime = null;
+        try {
+            endTime = startTime.plus(Duration.ofMinutes(duration));
+        } catch (NullPointerException e) {
+        }
+        return endTime;
     }
 
     @Override
@@ -94,6 +84,8 @@ public class Task {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", startTime=" + startTime +
+                ", endTime=" + getEndTime() +
                 '}';
     }
 }

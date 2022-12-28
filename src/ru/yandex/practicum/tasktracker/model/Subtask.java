@@ -20,6 +20,8 @@ public class Subtask extends Task {
                 ", name='" + super.getName() + '\'' +
                 ", description='" + super.getDescription() + '\'' +
                 ", status=" + super.getStatus() +
+                ", startTime=" + super.getStartTime() +
+                ", endTime=" + super.getEndTime() +
                 '}';
     }
 }
