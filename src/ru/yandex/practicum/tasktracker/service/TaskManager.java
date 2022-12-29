@@ -11,13 +11,15 @@ import java.util.List;
 
 public interface TaskManager {
 
-    List<Task> getPrioritizedTasks();
-
     void createTask(String name, String description);
 
     void createEpic(String name, String description);
 
     void createSubtask(String name, String description, int epicId);
+
+    void setTaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration);
+
+    void setSubtaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration);
 
     void updateTask(int id, String name, String description, TaskStatus status);
 
@@ -31,12 +33,6 @@ public interface TaskManager {
 
     Subtask getSubtaskById(int id);
 
-    void deleteTaskById(int id);
-
-    void deleteEpicById(int id);
-
-    void deleteSubtaskById(Integer id, int epicId);
-
     ArrayList<Task> getAllTasks();
 
     ArrayList<Epic> getAllEpics();
@@ -45,15 +41,19 @@ public interface TaskManager {
 
     ArrayList<Subtask> getAllSubtasksInEpic(int id);
 
+    List<Task> getPrioritizedTasksAndSubtasks();
+
+    void deleteTaskById(int id);
+
+    void deleteEpicById(int id);
+
+    void deleteSubtaskById(Integer id, int epicId);
+
     void deleteAllTasks();
 
     void deleteAllEpics();
 
     void deleteAllSubtasks();
-
-    void setTaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration);
-
-    void setSubtaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration);
 
     List<Task> getHistory();
 }

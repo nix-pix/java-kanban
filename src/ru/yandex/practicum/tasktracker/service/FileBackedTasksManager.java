@@ -155,6 +155,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         fileBackedTasksManager.allTasks.putAll(fileBackedTasksManager.tasks);
         fileBackedTasksManager.allTasks.putAll(fileBackedTasksManager.epics);
         fileBackedTasksManager.allTasks.putAll(fileBackedTasksManager.subtasks);
+        fileBackedTasksManager.prioritizedTasksAndSubtasks.addAll(fileBackedTasksManager.tasks.values());
+        fileBackedTasksManager.prioritizedTasksAndSubtasks.addAll(fileBackedTasksManager.subtasks.values());
 
         List<Integer> historyIds = historyFromString(lines[i + 1]);
         for (Integer id : historyIds) {
@@ -191,6 +193,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
+    public void setTaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration) {
+        super.setTaskStartTimeAndDuration(id, startTime, duration);
+        save();
+    }
+
+    @Override
+    public void setSubtaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration) {
+        super.setSubtaskStartTimeAndDuration(id, startTime, duration);
+        save();
+    }
+
+    @Override
     public Task getTaskById(int id) {
         Task task = super.getTaskById(id);
         save();
@@ -209,17 +223,5 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         Subtask subtask = super.getSubtaskById(id);
         save();
         return subtask;
-    }
-
-    @Override
-    public void setTaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration) {
-        super.setTaskStartTimeAndDuration(id, startTime, duration);
-        save();
-    }
-
-    @Override
-    public void setSubtaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration) {
-        super.setSubtaskStartTimeAndDuration(id, startTime, duration);
-        save();
     }
 }
