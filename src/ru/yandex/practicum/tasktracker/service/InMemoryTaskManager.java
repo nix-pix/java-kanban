@@ -2,6 +2,7 @@ package ru.yandex.practicum.tasktracker.service;
 
 import ru.yandex.practicum.tasktracker.model.*;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -61,6 +62,15 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void setTaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration) {
         Task task = tasks.get(id);
+        LocalDateTime taskEndTime = startTime.plus(Duration.ofMinutes(duration));
+        for (Task taskToCheck : prioritizedTasksAndSubtasks) {
+            if (taskToCheck.getStartTime() != null
+                    && startTime.isBefore(taskToCheck.getEndTime()) && taskEndTime.isAfter(taskToCheck.getStartTime())) {
+                System.out.println("Неудачная попытка добавить время выполнения задачи. Период выполнения пересекается " +
+                        " с периодами из других задач. Выберете другое время.");
+                return;
+            }
+        }
         task.setStartTime(startTime);
         task.setDuration(duration);
         prioritizedTasksAndSubtasks.removeIf(taskToDelete -> taskToDelete.getId() == id);
@@ -70,6 +80,15 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void setSubtaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration) {
         Subtask subtask = subtasks.get(id);
+        LocalDateTime subtaskEndTime = startTime.plus(Duration.ofMinutes(duration));
+        for (Task taskToCheck : prioritizedTasksAndSubtasks) {
+            if (taskToCheck.getStartTime() != null
+                    && startTime.isBefore(taskToCheck.getEndTime()) && subtaskEndTime.isAfter(taskToCheck.getStartTime())) {
+                System.out.println("Неудачная попытка добавить время выполнения задачи. Период выполнения пересекается " +
+                        " с периодами из других задач. Выберете другое время.");
+                return;
+            }
+        }
         subtask.setStartTime(startTime);
         subtask.setDuration(duration);
         prioritizedTasksAndSubtasks.removeIf(subtaskToDelete -> subtaskToDelete.getId() == id);
@@ -93,7 +112,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(int id, String name, String description, TaskStatus status) {
-        tasks.put(id, new Task(id, TaskType.TASK, name, description, status));
+        Task task = new Task(id, TaskType.TASK, name, description, status);
+        tasks.put(id, task);
+        prioritizedTasksAndSubtasks.removeIf(taskToDelete -> taskToDelete.getId() == id);
+        prioritizedTasksAndSubtasks.add(task);
     }
 
     @Override
@@ -106,7 +128,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateSubtask(int id, String name, String description, TaskStatus status, int epicId) {
-        subtasks.put(id, new Subtask(id, TaskType.SUBTASK, name, description, status, epicId));
+        Subtask subtask = new Subtask(id, TaskType.SUBTASK, name, description, status, epicId);
+        subtasks.put(id, subtask);
+        prioritizedTasksAndSubtasks.removeIf(subtaskToDelete -> subtaskToDelete.getId() == id);
+        prioritizedTasksAndSubtasks.add(subtask);
         Epic epic = epics.get(epicId);
         if (status.equals(TaskStatus.DONE)) {
             epic.setStatus(TaskStatus.IN_PROGRESS);
@@ -114,8 +139,8 @@ public class InMemoryTaskManager implements TaskManager {
         List<Integer> subtaskIds = epic.getSubtaskIds();
         boolean epicIsDone = true;
         for (Integer subtaskId : subtaskIds) {
-            Subtask subtask = subtasks.get(subtaskId);
-            if (!subtask.getStatus().equals(TaskStatus.DONE)) {
+            Subtask subtaskToCheck = subtasks.get(subtaskId);
+            if (!subtaskToCheck.getStatus().equals(TaskStatus.DONE)) {
                 epicIsDone = false;
                 break;
             }

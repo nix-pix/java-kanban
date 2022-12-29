@@ -41,28 +41,58 @@ public class MainForTZ7 {
 //        System.out.println(taskManager.getSubtaskById(4));
 //        System.out.println(taskManager.getSubtaskById(5));
 
-        System.out.println("Проверка сортировки по startTime:");
+//        System.out.println("Проверка сортировки по startTime:");
+//
+//        taskManager.createTask("Задача 1", "Задача с id-1");
+//        taskManager.setTaskStartTimeAndDuration(
+//                1,
+//                LocalDateTime.of(2022, 12, 11, 9, 0),
+//                30);
+//        taskManager.createTask("Задача 2", "Задача с id-2");
+//        taskManager.setTaskStartTimeAndDuration(
+//                2,
+//                LocalDateTime.of(2022, 12, 11, 8, 0),
+//                30);
+//        taskManager.createTask("Задача 3", "Задача с id-3");
+//        taskManager.createTask("Задача 4", "Задача с id-4");
+//        taskManager.setTaskStartTimeAndDuration(
+//                4,
+//                LocalDateTime.of(2022, 12, 11, 7, 0),
+//                30);
+//        taskManager.createTask("Задача 5", "Задача с id-5");
+//        taskManager.setTaskStartTimeAndDuration(
+//                5,
+//                LocalDateTime.of(2022, 12, 11, 6, 0),
+//                30);
+//        System.out.println(taskManager.getPrioritizedTasksAndSubtasks());
+
+        System.out.println("Проверка задач на пересечение:");
 
         taskManager.createTask("Задача 1", "Задача с id-1");
         taskManager.setTaskStartTimeAndDuration(
                 1,
-                LocalDateTime.of(2022, 12, 11, 9, 0),
+                LocalDateTime.of(2022, 12, 11, 12, 0),
                 30);
         taskManager.createTask("Задача 2", "Задача с id-2");
         taskManager.setTaskStartTimeAndDuration(
                 2,
-                LocalDateTime.of(2022, 12, 11, 8, 0),
+                LocalDateTime.of(2022, 12, 11, 13, 0),
                 30);
         taskManager.createTask("Задача 3", "Задача с id-3");
-        taskManager.createTask("Задача 4", "Задача с id-4");
         taskManager.setTaskStartTimeAndDuration(
-                4,
-                LocalDateTime.of(2022, 12, 11, 7, 0),
+                3,
+                LocalDateTime.of(2022, 12, 11, 12, 30),
                 30);
-        taskManager.createTask("Задача 5", "Задача с id-5");
-        taskManager.setTaskStartTimeAndDuration(
+        taskManager.createEpic("Эпик 1", "Эпик с id-4");
+        taskManager.createSubtask("Подзадача 1 в эпике 1", "Подзадача с id-5", 4);
+        taskManager.setSubtaskStartTimeAndDuration(
                 5,
-                LocalDateTime.of(2022, 12, 11, 6, 0),
+                LocalDateTime.of(2022, 12, 11, 14, 0),
+                30);
+        taskManager.createSubtask("Подзадача 2 в эпике 1", "Подзадача с id-6", 4);
+        taskManager.setSubtaskStartTimeAndDuration(
+                6,
+                LocalDateTime.of(2022, 12, 11, 13, 40),
                 30);
         System.out.println(taskManager.getPrioritizedTasksAndSubtasks());
     }

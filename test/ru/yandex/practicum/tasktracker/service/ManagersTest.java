@@ -2,17 +2,13 @@ package ru.yandex.practicum.tasktracker.service;
 
 import org.junit.jupiter.api.Test;
 
-class InMemoryHistoryManagerTest {
+class ManagersTest {
 
     @Test
-    void add() {
+    void getDefault() {
     }
 
     @Test
-    void remove() {
-    }
-
-    @Test
-    void getHistory() {
+    void getDefaultHistory() {
     }
 }
