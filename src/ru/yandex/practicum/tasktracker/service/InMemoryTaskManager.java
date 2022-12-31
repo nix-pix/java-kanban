@@ -35,6 +35,22 @@ public class InMemoryTaskManager implements TaskManager {
         this.idSequence = idSequence;
     }
 
+    boolean checkId(int id, TaskType taskType) {
+        Set<Integer> idSet = new HashSet<>();
+        switch (taskType) {
+            case TASK:
+                idSet = tasks.keySet();
+                break;
+            case EPIC:
+                idSet = epics.keySet();
+                break;
+            case SUBTASK:
+                idSet = subtasks.keySet();
+                break;
+        }
+        return !idSet.contains(id);
+    }
+
     @Override
     public void createTask(String name, String description) {
         int id = generateId();
@@ -51,6 +67,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void createSubtask(String name, String description, int epicId) {
+        if (epics.get(epicId) == null) {
+            System.out.println("Создать подзадачу без эпика невозможно");
+            return;
+        }
         int id = generateId();
         Subtask subtask = new Subtask(id, TaskType.SUBTASK, name, description, TaskStatus.NEW, epicId);
         subtasks.put(id, subtask);
@@ -61,6 +81,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void setTaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration) {
+        if (checkId(id, TaskType.TASK)) {
+            System.out.println("Не верно указан id. Время не может быть установлено");
+            return;
+        }
         Task task = tasks.get(id);
         LocalDateTime taskEndTime = startTime.plus(Duration.ofMinutes(duration));
         for (Task taskToCheck : prioritizedTasksAndSubtasks) {
@@ -79,6 +103,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void setSubtaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration) {
+        if (checkId(id, TaskType.SUBTASK)) {
+            System.out.println("Не верно указан id. Время не может быть установлено");
+            return;
+        }
         Subtask subtask = subtasks.get(id);
         LocalDateTime subtaskEndTime = startTime.plus(Duration.ofMinutes(duration));
         for (Task taskToCheck : prioritizedTasksAndSubtasks) {
@@ -112,6 +140,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(int id, String name, String description, TaskStatus status) {
+        if (checkId(id, TaskType.TASK)) {
+            System.out.println("Не верно указан id. Задача не обновлена");
+            return;
+        }
         Task task = new Task(id, TaskType.TASK, name, description, status);
         tasks.put(id, task);
         prioritizedTasksAndSubtasks.removeIf(taskToDelete -> taskToDelete.getId() == id);
@@ -120,6 +152,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateEpic(int id, String name, String description) {
+        if (checkId(id, TaskType.EPIC)) {
+            System.out.println("Не верно указан id. Эпик не обновлен");
+            return;
+        }
         Epic epic = epics.get(id);
         epic.setName(name);
         epic.setDescription(description);
@@ -128,12 +164,20 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateSubtask(int id, String name, String description, TaskStatus status, int epicId) {
+        if (checkId(id, TaskType.SUBTASK)) {
+            System.out.println("Не верно указан id подзадачи. Подзадача не обновлена");
+            return;
+        }
+        if (epics.get(epicId) == null) {
+            System.out.println("Обновить подзадачу без эпика невозможно");
+            return;
+        }
         Subtask subtask = new Subtask(id, TaskType.SUBTASK, name, description, status, epicId);
         subtasks.put(id, subtask);
         prioritizedTasksAndSubtasks.removeIf(subtaskToDelete -> subtaskToDelete.getId() == id);
         prioritizedTasksAndSubtasks.add(subtask);
         Epic epic = epics.get(epicId);
-        if (status.equals(TaskStatus.DONE)) {
+        if (status.equals(TaskStatus.DONE) || status.equals(TaskStatus.IN_PROGRESS)) {
             epic.setStatus(TaskStatus.IN_PROGRESS);
         }
         List<Integer> subtaskIds = epic.getSubtaskIds();
@@ -152,6 +196,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
+        if (checkId(id, TaskType.TASK)) {
+            try {
+                throw new InputException("Не верно указан id");
+            } catch (InputException e) {
+                System.out.println(e.getMessage());
+                return null;
+            }
+        }
         Task task = tasks.get(id);
         historyManager.add(task);
         return task;
@@ -159,6 +211,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic getEpicById(int id) {
+        if (checkId(id, TaskType.EPIC)) {
+            try {
+                throw new InputException("Не верно указан id");
+            } catch (InputException e) {
+                System.out.println(e.getMessage());
+                return null;
+            }
+        }
         Epic epic = epics.get(id);
         historyManager.add(epic);
         return epic;
@@ -166,6 +226,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Subtask getSubtaskById(int id) {
+        if (checkId(id, TaskType.SUBTASK)) {
+            try {
+                throw new InputException("Не верно указан id");
+            } catch (InputException e) {
+                System.out.println(e.getMessage());
+                return null;
+            }
+        }
         Subtask subtask = subtasks.get(id);
         historyManager.add(subtask);
         return subtask;
@@ -188,6 +256,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public ArrayList<Subtask> getAllSubtasksInEpic(int id) {
+        if (epics.get(id) == null) {
+            System.out.println("Получить подзадачу без эпика невозможно");
+            return null;
+        }
         Epic epic = epics.get(id);
         List<Integer> subtaskIds = epic.getSubtaskIds();
         ArrayList<Subtask> subtasksInEpic = new ArrayList<>();
@@ -204,6 +276,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTaskById(int id) {
+        if (checkId(id, TaskType.TASK)) {
+            System.out.println("Не верно указан id. Задача не удалена");
+            return;
+        }
         tasks.remove(id);
         historyManager.remove(id);
         prioritizedTasksAndSubtasks.removeIf(taskToDelete -> taskToDelete.getId() == id);
@@ -211,6 +287,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteEpicById(int id) {
+        if (checkId(id, TaskType.TASK)) {
+            System.out.println("Не верно указан id. Эпик не удален");
+            return;
+        }
         Epic epic = epics.get(id);
         List<Integer> subtaskIds = epic.getSubtaskIds();
         for (Integer subtaskId : subtaskIds) {
@@ -223,6 +303,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteSubtaskById(Integer id, int epicId) {
+        if (checkId(id, TaskType.SUBTASK)) {
+            System.out.println("Не верно указан id. Подзадача не удалена");
+            return;
+        }
+        if (epics.get(epicId) == null) {
+            System.out.println("Удалить подзадачу без эпика невозможно");
+            return;
+        }
         Epic epic = epics.get(epicId);
         Subtask deleteSubtask = subtasks.get(id);
         if (epic.getEpicDuration() != 0) {

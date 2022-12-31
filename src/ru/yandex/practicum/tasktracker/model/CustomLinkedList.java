@@ -30,6 +30,10 @@ public class CustomLinkedList {
     }
 
     public void removeNode(int id) {
+        if (history.get(id) == null) {
+            System.out.println("В истории этого нет. Нельзя удалить то, чего нет");
+            return;
+        }
         Node toRemove = history.get(id);
         Node prev = toRemove.prev;
         Node next = toRemove.next;
