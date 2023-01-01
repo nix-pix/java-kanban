@@ -257,7 +257,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public ArrayList<Subtask> getAllSubtasksInEpic(int id) {
         if (epics.get(id) == null) {
-            System.out.println("Получить подзадачу без эпика невозможно");
+            System.out.println("Такого эпика не существует");
             return null;
         }
         Epic epic = epics.get(id);
@@ -287,7 +287,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteEpicById(int id) {
-        if (checkId(id, TaskType.TASK)) {
+        if (checkId(id, TaskType.EPIC)) {
             System.out.println("Не верно указан id. Эпик не удален");
             return;
         }
