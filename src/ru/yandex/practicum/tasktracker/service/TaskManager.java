@@ -17,6 +17,8 @@ public interface TaskManager {
 
     void createSubtask(String name, String description, int epicId);
 
+    void setStartTimeAndDuration(int id, LocalDateTime startTime, long duration);
+
     void setTaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration);
 
     void setSubtaskStartTimeAndDuration(int id, LocalDateTime startTime, long duration);

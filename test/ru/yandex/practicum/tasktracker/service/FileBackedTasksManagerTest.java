@@ -50,13 +50,14 @@ class FileBackedTasksManagerTest extends InMemoryTaskManagerTest {
 
     @Test
     void taskIntoOnlyReadFileTest() {
-        path = Paths.get("." + File.separator + "resources" + File.separator + "testOnlyReadFile.csv");
+//        path = Paths.get("." + File.separator + "resources" + File.separator + "testOnlyReadFile.csv");
+        path = Paths.get("C:" + File.separator + "testFile2.csv");
         fileTaskManager = new FileBackedTasksManager(path);
 
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
             fileTaskManager.createTask("Задача 1", "id-1");
         });
-//        assertEquals("Ошибка сохранения файла", thrown.getMessage());
+//        assertEquals("Ошибка сохранения файла", thrown.getMessage()); не использовал
     }
 
     @Test
