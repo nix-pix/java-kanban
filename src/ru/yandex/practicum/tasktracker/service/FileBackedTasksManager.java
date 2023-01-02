@@ -42,6 +42,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             try {
                 throw new ManagerSaveException("Ошибка сохранения файла");
             } catch (ManagerSaveException ex) {
+                System.out.println(ex.getMessage());
                 throw new RuntimeException(ex);
             }
         }
@@ -138,7 +139,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         String[] lines = fileData.split("\r?\n");
         int i = 1;
-        for (; !lines[i].isBlank() && i < lines.length; i++) {
+        for (; i < lines.length && !lines[i].isBlank(); i++) {
             String line = lines[i];
             Task task = fileBackedTasksManager.fromString(line);
             int taskId = task.getId();
@@ -152,16 +153,19 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 fileBackedTasksManager.subtasks.put(taskId, (Subtask) task);
             }
         }
+
         fileBackedTasksManager.allTasks.putAll(fileBackedTasksManager.tasks);
         fileBackedTasksManager.allTasks.putAll(fileBackedTasksManager.epics);
         fileBackedTasksManager.allTasks.putAll(fileBackedTasksManager.subtasks);
         fileBackedTasksManager.prioritizedTasksAndSubtasks.addAll(fileBackedTasksManager.tasks.values());
         fileBackedTasksManager.prioritizedTasksAndSubtasks.addAll(fileBackedTasksManager.subtasks.values());
 
-        List<Integer> historyIds = historyFromString(lines[i + 1]);
-        for (Integer id : historyIds) {
-            Task task = fileBackedTasksManager.allTasks.get(id);
-            fileBackedTasksManager.historyManager.add(task);
+        if (i < lines.length) {
+            List<Integer> historyIds = historyFromString(lines[i + 1]);
+            for (Integer id : historyIds) {
+                Task task = fileBackedTasksManager.allTasks.get(id);
+                fileBackedTasksManager.historyManager.add(task);
+            }
         }
 
         int maxId = 0;

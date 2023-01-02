@@ -13,7 +13,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class TaskManagerTest<T extends TaskManager> {
-
     private static TaskManager taskManager;
     private static int firstGeneratedId;
 
@@ -364,6 +363,5 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.deleteSubtaskById(3, 1);
         List<Subtask> subtasksAfterDelete = taskManager.getAllSubtasks();
         assertEquals(1, subtasksAfterDelete.size());
-
     }
 }

@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class TaskTest {
-
     private static Task task;
 
     @BeforeEach
