@@ -348,6 +348,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllTasks() {
+        Set<Integer> ids = tasks.keySet();
+        for (int id : ids) {
+            prioritizedTasksAndSubtasks.removeIf(taskToDelete -> taskToDelete.getId() == id);
+        }
         tasks.clear();
     }
 
@@ -358,6 +362,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllSubtasks() {
+        Set<Integer> ids = subtasks.keySet();
+        for (int id : ids) {
+            prioritizedTasksAndSubtasks.removeIf(subtaskToDelete -> subtaskToDelete.getId() == id);
+        }
         subtasks.clear();
     }
 
