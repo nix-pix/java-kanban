@@ -2,7 +2,7 @@ package ru.yandex.practicum.tasktracker;
 
 import ru.yandex.practicum.tasktracker.model.Epic;
 import ru.yandex.practicum.tasktracker.model.Task;
-import ru.yandex.practicum.tasktracker.service.FileBackedTasksManager;
+import ru.yandex.practicum.tasktracker.service.FileBackedTaskManager;
 import ru.yandex.practicum.tasktracker.service.TaskManager;
 
 import java.io.File;
@@ -14,7 +14,7 @@ public class TestMainForTZ7 {
     public static void main(String[] args) {
         Path path = Paths.get("." + File.separator + "resources" + File.separator + "testFile.csv");
 
-        TaskManager fileTaskManager = new FileBackedTasksManager(path);
+        TaskManager fileTaskManager = new FileBackedTaskManager(path);
 
         fileTaskManager.createTask("Задача 1", "id-1");
         fileTaskManager.createEpic("Эпик 1", "id-2");
@@ -27,7 +27,7 @@ public class TestMainForTZ7 {
         Epic epic = epics.get(0);
         System.out.println(epic);
         System.out.println(fileTaskManager.getHistory());
-        TaskManager loadedFileTaskManager = FileBackedTasksManager.loadFromFile(path);
+        TaskManager loadedFileTaskManager = FileBackedTaskManager.loadFromFile(path);
         List<Task> loadedTasks = loadedFileTaskManager.getAllTasks();
         System.out.println(loadedTasks);
         List<Epic> loadedEpics = loadedFileTaskManager.getAllEpics();

@@ -17,11 +17,10 @@ public class HttpTaskServer {
     private static final int PORT = 8080;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private static final Gson gson = new Gson();
-    public TaskManager fileBackedTasksManager;
-    private HttpServer httpServer;
+    public TaskManager fileBackedTasksManager = Managers.getFileBacked();
+    private final HttpServer httpServer;
 
     public HttpTaskServer() throws IOException {
-        this.fileBackedTasksManager = Managers.getFileBacked();
         httpServer = HttpServer.create();
         httpServer.bind(new InetSocketAddress(PORT), 0);
         httpServer.createContext("/tasks", this::handleTasks);
@@ -225,9 +224,9 @@ public class HttpTaskServer {
         }
     }
 
-    class TaskFromJson {
-        private String name;
-        private String description;
+    static class TaskFromJson {
+        private final String name;
+        private final String description;
         private int epicId;
 
         public TaskFromJson(String name, String description) {

@@ -23,7 +23,7 @@ class FileBackedTasksManagerTest extends InMemoryTaskManagerTest {
     @BeforeEach
     void beforeEachInFTM() {
         path = Paths.get("." + File.separator + "resources" + File.separator + "testFile.csv");
-        fileTaskManager = new FileBackedTasksManager(path);
+        fileTaskManager = new FileBackedTaskManager(path);
         firstId = 1;
     }
 
@@ -52,7 +52,7 @@ class FileBackedTasksManagerTest extends InMemoryTaskManagerTest {
     void taskIntoOnlyReadFileTest() {
 //        path = Paths.get("." + File.separator + "resources" + File.separator + "testOnlyReadFile.csv");
         path = Paths.get("C:" + File.separator + "testFile2.csv");
-        fileTaskManager = new FileBackedTasksManager(path);
+        fileTaskManager = new FileBackedTaskManager(path);
 
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
             fileTaskManager.createTask("Задача 1", "id-1");
@@ -63,7 +63,7 @@ class FileBackedTasksManagerTest extends InMemoryTaskManagerTest {
     @Test
     void taskAndHistoryFromFileTest() {
         path = Paths.get("." + File.separator + "resources" + File.separator + "testLoadFile.csv");
-        TaskManager loadedFileTaskManager = FileBackedTasksManager.loadFromFile(path);
+        TaskManager loadedFileTaskManager = FileBackedTaskManager.loadFromFile(path);
         List<Task> tasks = loadedFileTaskManager.getAllTasks();
         List<Epic> epics = loadedFileTaskManager.getAllEpics();
         List<Subtask> subtasks = loadedFileTaskManager.getAllSubtasks();
@@ -77,7 +77,7 @@ class FileBackedTasksManagerTest extends InMemoryTaskManagerTest {
     @Test
     void taskAndHistoryFromEmptyFileTest() {
         path = Paths.get("." + File.separator + "resources" + File.separator + "testLoadEmptyFile.csv");
-        TaskManager loadedFileTaskManager = FileBackedTasksManager.loadFromFile(path);
+        TaskManager loadedFileTaskManager = FileBackedTaskManager.loadFromFile(path);
         List<Task> tasks = loadedFileTaskManager.getAllTasks();
         List<Epic> epics = loadedFileTaskManager.getAllEpics();
         List<Subtask> subtasks = loadedFileTaskManager.getAllSubtasks();
@@ -93,7 +93,7 @@ class FileBackedTasksManagerTest extends InMemoryTaskManagerTest {
         fileTaskManager.createTask("Задача 1", "id-1");
         fileTaskManager.createEpic("Эпик 1", "id-2");
 
-        TaskManager loadedFileTaskManager = FileBackedTasksManager.loadFromFile(path);
+        TaskManager loadedFileTaskManager = FileBackedTaskManager.loadFromFile(path);
         List<Epic> loadedEpics = loadedFileTaskManager.getAllEpics();
         Epic loadedEpic = loadedEpics.get(0);
         List<Integer> subtasksInEpic = loadedEpic.getSubtaskIds();

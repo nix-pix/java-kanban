@@ -10,9 +10,9 @@ public class KVTaskClient {
     private final String url; // http://localhost:8078/
     private final HttpClient client;
     private final String apiToken;
+
     /* Конструктор принимает URL к серверу хранилища и регистрируется.
     При регистрации выдаётся токен (API_TOKEN), который нужен при работе с сервером. */
-
     public KVTaskClient(String url) {
         this.url = url;
         client = HttpClient.newHttpClient();
@@ -28,8 +28,7 @@ public class KVTaskClient {
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                String token = response.body();
-                return token;
+                return response.body();
             } else {
                 System.out.println("Что-то пошло не так. Сервер вернул код состояния: " + response.statusCode());
             }
@@ -66,8 +65,7 @@ public class KVTaskClient {
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                String json = response.body();
-                return json;
+                return response.body();
             } else {
                 System.out.println("Что-то пошло не так. Сервер вернул код состояния: " + response.statusCode());
             }

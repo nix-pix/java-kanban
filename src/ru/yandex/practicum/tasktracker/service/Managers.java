@@ -9,14 +9,13 @@ public final class Managers {
     private Managers() {
     }
 
-//    public static TaskManager getDefault() { //с ТЗ-8
-//        return new HttpTaskServer();
-//    }
-
-    public static TaskManager getDefault() { //до ТЗ-8
-        return new InMemoryTaskManager();
-
+    public static TaskManager getDefault() { //с ТЗ-8
+        return new HttpTaskManager("http://localhost:8078/");
     }
+
+//    public static TaskManager getDefault() { //до ТЗ-7
+//        return new InMemoryTaskManager();
+//    }
 
     public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
@@ -24,6 +23,6 @@ public final class Managers {
 
     public static TaskManager getFileBacked() {
         Path path = Paths.get("." + File.separator + "resources" + File.separator + "memoryFileHttp.csv");
-        return new FileBackedTasksManager(path);
+        return new FileBackedTaskManager(path);
     }
 }

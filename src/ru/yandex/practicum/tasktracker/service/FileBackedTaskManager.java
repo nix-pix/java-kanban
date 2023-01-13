@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FileBackedTasksManager extends InMemoryTaskManager {
+public class FileBackedTaskManager extends InMemoryTaskManager {
     private final Path path;
     protected final HashMap<Integer, Task> allTasks = new HashMap<>();
 
-    public FileBackedTasksManager(Path path) {
+    public FileBackedTaskManager(Path path) {
         this.path = path;
     }
 
@@ -121,8 +121,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return historyIds;
     }
 
-    public static FileBackedTasksManager loadFromFile(Path path) {
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(path);
+    public static FileBackedTaskManager loadFromFile(Path path) {
+        FileBackedTaskManager fileBackedTasksManager = new FileBackedTaskManager(path);
         String fileData;
 
         try {
