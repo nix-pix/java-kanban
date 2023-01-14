@@ -3,11 +3,13 @@ package ru.yandex.practicum.tasktracker.net;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import ru.yandex.practicum.tasktracker.model.Epic;
+import ru.yandex.practicum.tasktracker.model.Subtask;
+import ru.yandex.practicum.tasktracker.model.Task;
 import ru.yandex.practicum.tasktracker.service.Managers;
 import ru.yandex.practicum.tasktracker.service.TaskManager;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -109,30 +111,28 @@ public class HttpTaskServer {
                     break;
                 }
                 case "POST": {
-                    InputStream body = httpExchange.getRequestBody();
-                    byte[] allBytesOfBody = body.readAllBytes();
-                    String bodyContent = new String(allBytesOfBody);
+                    String bodyContent = readText(httpExchange);
                     if (Pattern.matches("^/tasks/task/$", path)) {
-                        TaskFromJson taskFromJson = gson.fromJson(bodyContent, TaskFromJson.class);
-                        String name = taskFromJson.getName();
-                        String description = taskFromJson.getDescription();
+                        Task task = gson.fromJson(bodyContent, Task.class);
+                        String name = task.getName();
+                        String description = task.getDescription();
                         fileBackedTasksManager.createTask(name, description);
                         sendText(httpExchange, "Задача_создана");
                         break;
                     }
                     if (Pattern.matches("^/tasks/epic/$", path)) {
-                        TaskFromJson epicFromJson = gson.fromJson(bodyContent, TaskFromJson.class);
-                        String name = epicFromJson.getName();
-                        String description = epicFromJson.getDescription();
+                        Epic epic = gson.fromJson(bodyContent, Epic.class);
+                        String name = epic.getName();
+                        String description = epic.getDescription();
                         fileBackedTasksManager.createEpic(name, description);
                         sendText(httpExchange, "Эпик_создан");
                         break;
                     }
                     if (Pattern.matches("^/tasks/subtask/$", path)) {
-                        TaskFromJson subtaskFromJson = gson.fromJson(bodyContent, TaskFromJson.class);
-                        String name = subtaskFromJson.getName();
-                        String description = subtaskFromJson.getDescription();
-                        int epicId = subtaskFromJson.getEpicId();
+                        Subtask subtask = gson.fromJson(bodyContent, Subtask.class);
+                        String name = subtask.getName();
+                        String description = subtask.getDescription();
+                        int epicId = subtask.getEpicId();
                         fileBackedTasksManager.createSubtask(name, description, epicId);
                         sendText(httpExchange, "Подзадача_создана");
                         break;
@@ -221,35 +221,6 @@ public class HttpTaskServer {
             return Integer.parseInt(query);
         } catch (NumberFormatException exception) {
             return -1;
-        }
-    }
-
-    static class TaskFromJson {
-        private final String name;
-        private final String description;
-        private int epicId;
-
-        public TaskFromJson(String name, String description) {
-            this.name = name;
-            this.description = description;
-        }
-
-        public TaskFromJson(String name, String description, int epicId) {
-            this.name = name;
-            this.description = description;
-            this.epicId = epicId;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public int getEpicId() {
-            return epicId;
         }
     }
 }

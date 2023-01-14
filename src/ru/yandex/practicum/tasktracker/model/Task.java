@@ -2,6 +2,7 @@ package ru.yandex.practicum.tasktracker.model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Task {
     private final int id;
@@ -88,5 +89,18 @@ public class Task {
                 ", duration(min)=" + duration +
                 ", endTime=" + getEndTime() +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id == task.id && duration == task.duration && type == task.type && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && Objects.equals(startTime, task.startTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, type, name, description, status, startTime, duration);
     }
 }

@@ -6,13 +6,3 @@ S
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
-h
-8test/ru/yandex/practicum/tasktracker/model/TaskTest.java,5\8\584aad913bee9ca7902ab73d34735df1a2c5a0c7
-y
-Itest/ru/yandex/practicum/tasktracker/service/InMemoryTaskManagerTest.java,1\8\18cc227e0b559ef953c7812c7f4bf67a935f54e9
-q
-Atest/ru/yandex/practicum/tasktracker/service/TaskManagerTest.java,0\f\0f605abce6bbbbb156abb08c9cb5c894c29f5acf
-|
-Ltest/ru/yandex/practicum/tasktracker/service/InMemoryHistoryManagerTest.java,9\1\91c62818b73f4d64824a40c145afd8465cd43100
-|
-Ltest/ru/yandex/practicum/tasktracker/service/FileBackedTasksManagerTest.java,e\a\ea8e6438a196bcc39aba4a376aec9219e7c16552

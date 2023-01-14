@@ -79,26 +79,9 @@ public class InMemoryTaskManager implements TaskManager {
         prioritizedTasksAndSubtasks.add(subtask);
     }
 
-    @Override //не используется
+    @Override
     public void setStartTimeAndDuration(int id, LocalDateTime startTime, long duration) {
-        if (checkId(id, TaskType.TASK)) {
-            System.out.println("Не верно указан id. Время не может быть установлено");
-            return;
-        }
-        Task task = tasks.get(id);
-        LocalDateTime taskEndTime = startTime.plus(Duration.ofMinutes(duration));
-        for (Task taskToCheck : prioritizedTasksAndSubtasks) {
-            if (taskToCheck.getStartTime() != null
-                    && startTime.isBefore(taskToCheck.getEndTime()) && taskEndTime.isAfter(taskToCheck.getStartTime())) {
-                System.out.println("Неудачная попытка добавить время выполнения задачи. Период выполнения пересекается " +
-                        " с периодами из других задач. Выберете другое время.");
-                return;
-            }
-        }
-        task.setStartTime(startTime);
-        task.setDuration(duration);
-        prioritizedTasksAndSubtasks.removeIf(taskToDelete -> taskToDelete.getId() == id);
-        prioritizedTasksAndSubtasks.add(task);
+        //не используется
     }
 
     @Override

@@ -82,7 +82,13 @@ public class HttpTaskManager extends FileBackedTaskManager {
         httpTaskManager.prioritizedTasksAndSubtasks.addAll(httpTaskManager.tasks.values());
         httpTaskManager.prioritizedTasksAndSubtasks.addAll(httpTaskManager.subtasks.values());
 
+        List<Integer> historyIds = new ArrayList<>();
         for (Task task : history) {
+            int id = task.getId();
+            historyIds.add(id);
+        }
+        for (Integer id : historyIds) {
+            Task task = httpTaskManager.allTasks.get(id);
             httpTaskManager.historyManager.add(task);
         }
 
